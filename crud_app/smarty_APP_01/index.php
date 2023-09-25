@@ -76,18 +76,25 @@ if (!$conn) {
 // PL/SQLプロシージャを呼び出す
 // $query = "BEGIN GET_TABLE_LIST(:p1); END;";
 $query = 'BEGIN GET_TABLE_LIST_02(:p1); END;';
-
 $stmt = oci_parse($conn, $query);
-
-// OUTパラメータのバインディング
 $r_str = ""; // OUTパラメータの初期化
 oci_bind_by_name($stmt, ':p1', $r_str, 4000); // 4000はVARCHAR2の最大サイズを示す値。適宜変更してください。
-
 oci_execute($stmt);
 
-// OUTパラメータの値を出力
-echo "プロシージャの出力: " . $r_str;
-// データベース接続を閉じる
+$idx = 0;
+// プロシージャの出力を1行ずつ表示
+while ($r_str != null) {
+    echo $r_str . "<br>";
+    oci_execute($stmt); // 次の行を取得するために再度実行
+
+    if ($idx >= 10) {
+        break;
+    }
+
+    $idx = $idx + 1;
+}
+
+
 oci_close($conn);
 
 
