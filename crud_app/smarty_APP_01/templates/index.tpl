@@ -11,9 +11,5 @@
     <h1>{$title}</h1>
     <p class="{$class}">Hello! {$name}</p>
 
-
-
-
-
 </body>
 </html>
